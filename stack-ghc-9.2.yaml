@@ -1,0 +1,8 @@
+resolver: lts-20.9
+
+packages:
+  - templette/
+  - templette-markdown/
+
+ghc-options:
+  '$locals': -Werror

@@ -1,0 +1,27 @@
+name: templette
+version: 0.1.0
+category: Text
+license: BSD3
+author: Brandon Chinn <brandonchinn178@gmail.com>
+maintainer: Brandon Chinn <brandonchinn178@gmail.com>
+github: brandonchinn178/templette
+
+ghc-options:
+  - -Wall
+  - -Wcompat
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wnoncanonical-monad-instances
+  - -Wno-unused-packages
+
+library:
+  source-dirs: src
+  dependencies:
+    - base < 5
+    - text
+
+executable:
+  main: exe/Main.hs
+  dependencies:
+    - base < 5
+    - templette
