@@ -14,7 +14,16 @@ TODO
 
 `templette` is a GHC preprocessor that takes a `.ths-*` file and converts it into a Haskell file containing a `templetteOutput` export containing the result of the template.
 
-<!-- TODO: enable templates to take parameters? -->
+<!-- TODO: enable templates to take parameters?
+\{$inputs}
+arg1 :: Int
+arg2 :: [Text]
+\{$end}
+
+===>
+templetteOutput :: Int -> [Text] -> Text
+templetteOutput arg1 arg2 = ...
+-->
 
 All content in the file will be passed verbatim to the output. The only thing that's special is anything wrapped in `{braces}`. Braces can contain a directive starting with a `$`, or otherwise contain a Haskell expression that will be interpolated into the output.
 

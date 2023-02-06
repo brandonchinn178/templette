@@ -21,6 +21,9 @@ source-repository head
 library
   exposed-modules:
       Templette
+      Templette.Config
+      Templette.Preprocessor
+      Templette.Preprocessor.Parse
   other-modules:
       Paths_templette
   hs-source-dirs:
@@ -28,6 +31,9 @@ library
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wnoncanonical-monad-instances -Wno-unused-packages
   build-depends:
       base <5
+    , containers
+    , megaparsec
+    , mtl
     , text
   default-language: Haskell2010
 
@@ -39,4 +45,24 @@ executable templette
   build-depends:
       base <5
     , templette
+  default-language: Haskell2010
+
+test-suite templette-tests
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Templette.Preprocessor.ParseTest
+      Paths_templette
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wnoncanonical-monad-instances -Wno-unused-packages -F -pgmF tasty-autocollect
+  build-tool-depends:
+      tasty-autocollect:tasty-autocollect
+  build-depends:
+      base
+    , tasty
+    , tasty-autocollect
+    , tasty-hunit
+    , templette
+    , text
   default-language: Haskell2010

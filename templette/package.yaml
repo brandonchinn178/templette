@@ -18,6 +18,9 @@ library:
   source-dirs: src
   dependencies:
     - base < 5
+    - containers
+    - megaparsec
+    - mtl
     - text
 
 executable:
@@ -25,3 +28,18 @@ executable:
   dependencies:
     - base < 5
     - templette
+
+tests:
+  templette-tests:
+    source-dirs: test
+    main: Main.hs
+    build-tool-depends:
+      - tasty-autocollect:tasty-autocollect
+    ghc-options: -F -pgmF tasty-autocollect
+    dependencies:
+      - base
+      - tasty
+      - tasty-autocollect
+      - tasty-hunit
+      - templette
+      - text
