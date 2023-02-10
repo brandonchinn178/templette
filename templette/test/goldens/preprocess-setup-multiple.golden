@@ -1,0 +1,32 @@
+# About me
+
+{$setup}
+adjective = "happy"
+{$end}
+
+I am a {adjective} person.
+
+{$setup}
+company = "Software Inc."
+{$end}
+
+I work at {company}.
+
+====>
+
+import qualified Templette.Prelude
+
+adjective = "happy"
+
+company = "Software Inc."
+templetteOutput :: Templette.Prelude.Text
+templetteOutput = mconcat
+  [ "# About me\n\n"
+  , "\n\nI am a "
+  , Templette.Prelude.interpolate (adjective)
+  , " person.\n\n"
+  , "\n\nI work at "
+  , Templette.Prelude.interpolate (company)
+  , ".\n"
+  ]
+

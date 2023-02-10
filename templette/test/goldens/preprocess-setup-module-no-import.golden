@@ -1,0 +1,25 @@
+# About me
+
+{$setup}
+module AboutMe where
+
+adjective = "happy"
+{$end}
+
+I am a {adjective} person.
+
+====>
+
+
+module AboutMe where
+import qualified Templette.Prelude
+
+adjective = "happy"
+templetteOutput :: Templette.Prelude.Text
+templetteOutput = mconcat
+  [ "# About me\n\n"
+  , "\n\nI am a "
+  , Templette.Prelude.interpolate (adjective)
+  , " person.\n"
+  ]
+

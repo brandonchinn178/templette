@@ -1,4 +1,4 @@
 import Templette
 
 main :: IO ()
-main = defaultMainWith defaultConfig
+main = defaultMainWith defaultConfig id

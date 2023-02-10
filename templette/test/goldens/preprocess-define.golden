@@ -1,0 +1,25 @@
+{$define description}
+I have {1 + 1} hobbies.
+{$end}
+
+Description 1: {description}
+Description 2: {Text.toUpper description}
+
+====>
+
+import qualified Templette.Prelude
+description :: Templette.Prelude.Text
+description = mconcat
+  [ "\nI have "
+  , Templette.Prelude.interpolate (1 + 1)
+  , " hobbies.\n"
+  ]
+templetteOutput :: Templette.Prelude.Text
+templetteOutput = mconcat
+  [ "\n\nDescription 1: "
+  , Templette.Prelude.interpolate (description)
+  , "\nDescription 2: "
+  , Templette.Prelude.interpolate (Text.toUpper description)
+  , "\n"
+  ]
+
