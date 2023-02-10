@@ -6,6 +6,9 @@ author: Brandon Chinn <brandonchinn178@gmail.com>
 maintainer: Brandon Chinn <brandonchinn178@gmail.com>
 github: brandonchinn178/templette
 
+extra-source-files:
+  - test/goldens/**/*.golden
+
 ghc-options:
   - -Wall
   - -Wcompat
@@ -33,13 +36,15 @@ tests:
   templette-tests:
     source-dirs: test
     main: Main.hs
-    build-tool-depends:
+    build-tools:
       - tasty-autocollect:tasty-autocollect
     ghc-options: -F -pgmF tasty-autocollect
     dependencies:
       - base
+      - bytestring
       - tasty
       - tasty-autocollect
+      - tasty-golden
       - tasty-hunit
       - templette
       - text

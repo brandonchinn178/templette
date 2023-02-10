@@ -13,22 +13,15 @@ module Templette.Config (
 import Control.Monad.State (State, runState)
 import Data.Text (Text)
 
-{- TODO:
-TempletteOutput = TempletteOutputRaw | TempletteOutputCode
+data TempletteConfig m = TempletteConfig
+  { _foo :: m ()
+  }
 
-preprocess :: [TempletteInput] -> m [TempletteInput]
-  = pure
-directives :: [(Text, TempletteInputDirective -> m [TempletteOutput])]
-  = [...]
-renderOutput :: [(Text, Text)] -> Text -> m Text
-  = \inputs output -> "templetteOutput :: <inputs>\ntempletteOutput <inputs> = <output>"
-postprocess :: [TempletteOutput] -> m [TempletteOutput]
-  = pure
--}
-data TempletteConfig = TempletteConfig
-
-defaultConfig :: TempletteConfig
-defaultConfig = TempletteConfig
+defaultConfig :: (Monad m) => TempletteConfig m
+defaultConfig =
+  TempletteConfig
+    { _foo = pure ()
+    }
 
 data TempletteDirective = TempletteDirective
   { directiveName :: Text

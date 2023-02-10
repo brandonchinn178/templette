@@ -67,6 +67,7 @@ parseTempletteInput =
     ]
 
 -- TODO: change delims temporarily with {$delims}
+-- TODO: use multiline string logic to strip leading/trailing newline + indentation
 parseTempletteDirective :: Parser TempletteDirective
 parseTempletteDirective = do
   TempletteParseOptions{..} <- ask

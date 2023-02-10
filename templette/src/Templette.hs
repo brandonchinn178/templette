@@ -1,4 +1,5 @@
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE RankNTypes #-}
 
 module Templette (
   defaultMainWith,
@@ -23,8 +24,8 @@ import Text.Printf (printf)
 import Templette.Config
 import Templette.Preprocessor
 
-defaultMainWith :: TempletteConfig -> IO ()
-defaultMainWith config = do
+defaultMainWith :: (Monad m) => TempletteConfig m -> (forall a. m a -> IO a) -> IO ()
+defaultMainWith config runM = do
   args <- getArgs
   when ("--help" `elem` args) $ printUsage >> exitSuccess
 
@@ -36,7 +37,7 @@ defaultMainWith config = do
   where
     preprocessInput origPath inputPath = do
       input <- Text.readFile inputPath
-      case preprocessWith config origPath input of
+      runM (preprocessWith config origPath input) >>= \case
         Left e -> Text.putStrLn e >> exitFailure
         Right output -> pure output
     printUsage = do
@@ -47,5 +48,5 @@ defaultMainWith config = do
         , printf "       %s PATH INPUT OUTPUT" progName
         ]
 
-renderWith :: TempletteConfig -> Text -> IO Text
+renderWith :: TempletteConfig m -> Text -> IO Text
 renderWith _ = pure

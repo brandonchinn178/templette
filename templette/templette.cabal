@@ -13,6 +13,15 @@ author:         Brandon Chinn <brandonchinn178@gmail.com>
 maintainer:     Brandon Chinn <brandonchinn178@gmail.com>
 license:        BSD3
 build-type:     Simple
+extra-source-files:
+    test/goldens/preprocess-call.golden
+    test/goldens/preprocess-define.golden
+    test/goldens/preprocess-interpolate.golden
+    test/goldens/preprocess-setup-module-import.golden
+    test/goldens/preprocess-setup-module-no-import.golden
+    test/goldens/preprocess-setup-multiple.golden
+    test/goldens/preprocess-setup-no-module-import.golden
+    test/goldens/preprocess-setup-no-module-no-import.golden
 
 source-repository head
   type: git
@@ -23,7 +32,9 @@ library
       Templette
       Templette.Config
       Templette.Preprocessor
+      Templette.Preprocessor.Directives
       Templette.Preprocessor.Parse
+      Templette.Preprocessor.Transform
   other-modules:
       Paths_templette
   hs-source-dirs:
@@ -52,6 +63,7 @@ test-suite templette-tests
   main-is: Main.hs
   other-modules:
       Templette.Preprocessor.ParseTest
+      Templette.PreprocessorTest
       Paths_templette
   hs-source-dirs:
       test
@@ -60,8 +72,10 @@ test-suite templette-tests
       tasty-autocollect:tasty-autocollect
   build-depends:
       base
+    , bytestring
     , tasty
     , tasty-autocollect
+    , tasty-golden
     , tasty-hunit
     , templette
     , text
