@@ -1,43 +1,67 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Templette.Config (
   TempletteConfig (..),
+  DirectiveInfo (..),
   defaultConfig,
-  TempletteDirective (..),
   defaultDirectives,
-  TempletteM,
-  TempletteState (..),
-  -- runTempletteM,
 ) where
 
-import Control.Monad.State (State, runState)
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Data.Text (Text)
 
+import qualified Templette.Preprocessor.Directives as Directives
+import Templette.Preprocessor.Parse (TempletteDirective, TempletteInput)
+import Templette.Preprocessor.Transform (TempletteOutput)
+
 data TempletteConfig m = TempletteConfig
-  { _foo :: m ()
+  { cfgDelimStart :: Char
+  , cfgDelimEnd :: Char
+  , cfgDirectiveStart :: Char
+  , cfgDirectives :: Map Text (DirectiveInfo m)
+  , cfgPreprocess :: [TempletteInput] -> m (Either Text [TempletteInput])
+  , cfgPostprocess :: [TempletteOutput] -> m (Either Text [TempletteOutput])
+  }
+
+data DirectiveInfo m = DirectiveInfo
+  { cfgDirectiveParseRaw :: Bool
+  , cfgDirectiveRun :: TempletteDirective -> m (Either Text [TempletteOutput])
   }
 
 defaultConfig :: (Monad m) => TempletteConfig m
 defaultConfig =
   TempletteConfig
-    { _foo = pure ()
+    { cfgDelimStart = '{'
+    , cfgDelimEnd = '}'
+    , cfgDirectiveStart = '$'
+    , cfgDirectives = defaultDirectives
+    , cfgPreprocess = pure . Right
+    , cfgPostprocess = pure . Right
     }
 
-data TempletteDirective = TempletteDirective
-  { directiveName :: Text
-  , directiveImpl :: [Text] -> Text -> TempletteM ()
-  }
-
-defaultDirectives :: [TempletteDirective]
-defaultDirectives = []
-
-newtype TempletteM a = TempletteM {unTempletteM :: State TempletteState a}
-  deriving (Functor, Applicative, Monad)
-
-data TempletteState = TempletteState
-  -- {
-  -- }
-
--- runTempletteM :: TempletteM a -> (a, (Text, Text))
--- runTempletteM
-
+defaultDirectives :: (Monad m) => Map Text (DirectiveInfo m)
+defaultDirectives =
+  Map.fromList
+    [
+      ( "setup"
+      , DirectiveInfo
+          { cfgDirectiveParseRaw = True
+          , cfgDirectiveRun = Directives.setupDirective
+          }
+      )
+    ,
+      ( "define"
+      , DirectiveInfo
+          { cfgDirectiveParseRaw = False
+          , cfgDirectiveRun = Directives.defineDirective
+          }
+      )
+    ,
+      ( "call"
+      , DirectiveInfo
+          { cfgDirectiveParseRaw = False
+          , cfgDirectiveRun = Directives.callDirective
+          }
+      )
+    ]
