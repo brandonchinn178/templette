@@ -32,6 +32,7 @@ library
       Templette
       Templette.Config
       Templette.Directives
+      Templette.Directives.Utils
       Templette.Prelude
       Templette.Preprocessor
       Templette.Preprocessor.Parse
