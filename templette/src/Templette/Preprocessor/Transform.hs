@@ -67,8 +67,11 @@ resolveInput TempletteTransformOptions{templetteDirectives} = \case
 
 renderInputContentExpr :: TempletteInputContent -> Text
 renderInputContentExpr = \case
-  TempletteInputText s -> Text.pack $ show s
-  TempletteInputInterpolate expr -> "Templette.Prelude.interpolate (" <> expr <> ")"
+  TempletteInputText s -> "Templette.Prelude.text " <> (Text.pack . show) s
+  TempletteInputInterpolate expr ->
+    -- sufficiently indent if interpolated expression is multiline
+    let expr' = Text.replace "\n" "\n    " expr
+     in "Templette.Prelude.interpolate (" <> expr' <> ")"
 
 -- TODO: enable hooking into this in TempletteTransformOptions?
 renderOutput :: [TempletteOutput] -> Text

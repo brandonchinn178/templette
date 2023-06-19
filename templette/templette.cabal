@@ -31,6 +31,7 @@ library
   exposed-modules:
       Templette
       Templette.Config
+      Templette.Prelude
       Templette.Preprocessor
       Templette.Preprocessor.Directives
       Templette.Preprocessor.Parse
@@ -43,9 +44,11 @@ library
   build-depends:
       base <5
     , containers
+    , hint
     , megaparsec
     , mtl
     , text
+    , unliftio
   default-language: Haskell2010
 
 executable templette

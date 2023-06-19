@@ -17,9 +17,13 @@ module Templette (
 import Control.Monad (when)
 import Data.Text (Text)
 import qualified Data.Text.IO as Text
+import qualified Language.Haskell.Interpreter as Hint
 import System.Environment (getArgs, getProgName)
 import System.Exit (exitFailure, exitSuccess)
+import System.IO (hClose)
 import Text.Printf (printf)
+import UnliftIO.Exception (fromEitherIO)
+import UnliftIO.Temporary (withSystemTempFile)
 
 import Templette.Config
 import Templette.Preprocessor
@@ -48,5 +52,17 @@ defaultMainWith config runM = do
         , printf "       %s PATH INPUT OUTPUT" progName
         ]
 
+-- TODO: replace Hint + temp file with running GHC driver directly?
 renderWith :: TempletteConfig m -> Text -> IO Text
-renderWith _ = pure
+renderWith _ script =
+  withSystemTempFile "templette-render.hs" $ \fp handle -> do
+    Text.hPutStr handle script
+    hClose handle
+    fromEitherIO . Hint.runInterpreter $ do
+      Hint.loadModules [fp]
+      Hint.setImportsF
+        [ Hint.ModuleImport "Prelude" Hint.NotQualified Hint.NoImportList
+        , Hint.ModuleImport "Data.Text" Hint.NotQualified (Hint.ImportList ["Text"])
+        , Hint.ModuleImport "Main" Hint.NotQualified Hint.NoImportList
+        ]
+      Hint.interpret "templetteOutput" Hint.infer

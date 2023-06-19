@@ -21,9 +21,11 @@ library:
   dependencies:
     - base < 5
     - containers
+    - hint
     - megaparsec
     - mtl
     - text
+    - unliftio
 
 executable:
   main: exe/Main.hs
