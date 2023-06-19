@@ -15,7 +15,6 @@ ghc-options:
   - -Wincomplete-record-updates
   - -Wincomplete-uni-patterns
   - -Wnoncanonical-monad-instances
-  - -Wno-unused-packages
 
 library:
   source-dirs: src
