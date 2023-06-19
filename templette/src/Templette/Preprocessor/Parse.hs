@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 
@@ -21,6 +22,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Void (Void)
 import Text.Megaparsec
+import qualified Text.Megaparsec.Internal as Internal
 
 data TempletteInput
   = TempletteInputContent TempletteInputContent
@@ -84,8 +86,9 @@ parseTempletteDirective = do
 parseDirectiveContentRaw :: Parser Text
 parseDirectiveContentRaw = do
   end <- asks directiveEnd
-  -- https://github.com/mrkkrp/megaparsec/issues/366
-  Text.pack <$> manyTill anySingle (chunk end)
+  content <- breakOn end
+  _ <- chunk end
+  pure content
 
 parseDirectiveContentNodes :: Parser [TempletteInputContent]
 parseDirectiveContentNodes = do
@@ -111,3 +114,14 @@ parseTempletteInputContent = do
 directiveEnd :: TempletteParseOptions -> Text
 directiveEnd TempletteParseOptions{..} =
   Text.pack [delimStart, directiveStart] <> "end" <> Text.pack [delimEnd]
+
+{----- Megaparsec utilities -----}
+
+-- https://github.com/mrkkrp/megaparsec/issues/366
+breakOn :: Text -> Parser Text
+breakOn end = mkParsec $ \s ->
+  let (pre, post) = Text.breakOn end (stateInput s)
+   in Internal.Reply
+        s{stateInput = post, stateOffset = stateOffset s + Text.length pre}
+        (if Text.null pre then Internal.NotConsumed else Internal.Consumed)
+        (Internal.OK mempty pre)
