@@ -11,7 +11,7 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Text (Text)
 
-import qualified Templette.Preprocessor.Directives as Directives
+import qualified Templette.Directives as Directives
 import Templette.Preprocessor.Parse (TempletteDirective, TempletteInput)
 import Templette.Preprocessor.Transform (TempletteOutput)
 

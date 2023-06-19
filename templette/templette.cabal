@@ -31,9 +31,9 @@ library
   exposed-modules:
       Templette
       Templette.Config
+      Templette.Directives
       Templette.Prelude
       Templette.Preprocessor
-      Templette.Preprocessor.Directives
       Templette.Preprocessor.Parse
       Templette.Preprocessor.Transform
   other-modules:

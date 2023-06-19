@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module Templette.Preprocessor.Directives (
+module Templette.Directives (
   setupDirective,
   defineDirective,
   callDirective,
