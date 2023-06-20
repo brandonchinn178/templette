@@ -6,7 +6,9 @@ An extensible templating system enabling the execution and interpolation of Hask
 
 ## Quickstart
 
-TODO
+1. `cabal install templette-markdown`
+1. `echo 'Hello {"wo" ++ "rld"}' > input.ths-md`
+1. `templette-markdown --render input.ths-md`
 
 ## Recommended extension
 
