@@ -29,7 +29,7 @@ All content in the file will be passed verbatim to the output. The only thing th
 
 ## Example
 
-The following example uses the `templette-markdown` library, extending `templette` specifically for use with Markdown:
+The following example uses the `templette-markdown` library, extending `templette` specifically for use with Markdown. [See it rendered here!](examples/readme-snippet.md)
 
 ```
 # Example
@@ -45,22 +45,20 @@ import Data.Text (Text)
 import Data.Text qualified as T
 
 shout :: Text -> Text
-shout t = T.toUpper t <> "!!"
+shout t = "**" <> T.toUpper t <> "!!" <> "**"
 {$end}
 
 Things defined in `$setup` blocks can be used in interpolation, like this: {shout "it works"}.
 
 `$call` blocks will call the function with the text content and interpolate the result:
 
-{$call shout}
-This will be shouted, {T.unwords ["even", "this"]}
-{$end}
+{$call shout}This will be shouted, {T.unwords ["even", "this"]}{$end}
 
 Blocks of content can be set for arbitrary variables with `$define` (which will not be rendered).
 
 {$define description}
-This is a description
-with interpolation: {show $ 1 + 1}
+> This is the description
+> with interpolation: {show $ 1 + 1}
 {$end}
 
 This renders the defined description:
@@ -77,10 +75,10 @@ wordsToLines :: Text -> Text
 wordsToLines = T.unlines . T.words
 {$end}
 
-`$eval` blocks are similar to `$code` blocks in that it also renders the Haskell expression, but it also interpolates the result of the expression below:
+`$eval` blocks are rendered as a Haskell-syntax code black (like `$code`), but it'll also interpolate the result of the expression below:
 
 {$eval}
-wordsToLines $
+wordsToLines . T.pack $
   "the quick brown fox "
     ++ "jumped over the lazy dog"
 {$end}
