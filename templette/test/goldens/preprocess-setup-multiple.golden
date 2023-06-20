@@ -21,12 +21,12 @@ adjective = "happy"
 company = "Software Inc."
 templetteOutput :: Templette.Prelude.Text
 templetteOutput = mconcat
-  [ "# About me\n\n"
-  , "\n\nI am a "
+  [ Templette.Prelude.text "# About me\n\n"
+  , Templette.Prelude.text "\n\nI am a "
   , Templette.Prelude.interpolate (adjective)
-  , " person.\n\n"
-  , "\n\nI work at "
+  , Templette.Prelude.text " person.\n\n"
+  , Templette.Prelude.text "\n\nI work at "
   , Templette.Prelude.interpolate (company)
-  , ".\n"
+  , Templette.Prelude.text ".\n"
   ]
 

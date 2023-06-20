@@ -17,9 +17,9 @@ import qualified Templette.Prelude
 adjective = "happy"
 templetteOutput :: Templette.Prelude.Text
 templetteOutput = mconcat
-  [ "# About me\n\n"
-  , "\n\nI am a "
+  [ Templette.Prelude.text "# About me\n\n"
+  , Templette.Prelude.text "\n\nI am a "
   , Templette.Prelude.interpolate (adjective)
-  , " person.\n"
+  , Templette.Prelude.text " person.\n"
   ]
 

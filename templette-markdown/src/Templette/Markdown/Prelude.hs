@@ -18,4 +18,3 @@ renderEvalOutput result =
         $ result
     , "> ```"
     ]
-

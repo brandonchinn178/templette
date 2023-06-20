@@ -13,10 +13,10 @@ import qualified Templette.Prelude
 import Data.Text (toUpper)
 templetteOutput :: Templette.Prelude.Text
 templetteOutput = mconcat
-  [ "\n\n"
+  [ Templette.Prelude.text "\n\n"
   , toUpper (mconcat
-  [ "\nThis will be shouted.\n"
+  [ Templette.Prelude.text "\nThis will be shouted.\n"
   ])
-  , "\n"
+  , Templette.Prelude.text "\n"
   ]
 

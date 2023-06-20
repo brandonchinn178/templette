@@ -8,10 +8,10 @@ Ending
 import qualified Templette.Prelude
 templetteOutput :: Templette.Prelude.Text
 templetteOutput = mconcat
-  [ "Normal line\nExpression: "
+  [ Templette.Prelude.text "Normal line\nExpression: "
   , Templette.Prelude.interpolate (repeat 10 '.')
-  , "\nGreeting: "
+  , Templette.Prelude.text "\nGreeting: "
   , Templette.Prelude.interpolate (greeting)
-  , "!\nEnding\n"
+  , Templette.Prelude.text "!\nEnding\n"
   ]
 

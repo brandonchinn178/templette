@@ -1,12 +1,22 @@
 name: templette
 version: 0.1.0
-category: Text
-license: BSD3
 author: Brandon Chinn <brandonchinn178@gmail.com>
 maintainer: Brandon Chinn <brandonchinn178@gmail.com>
+
+category: Text
+synopsis: Interpolate Haskell expressions into templates
+description: |
+  Interpolate Haskell expressions into templates.
+  See README for more information.
+
+license: BSD3
+license-file: LICENSE.md
+
 github: brandonchinn178/templette
 
 extra-source-files:
+  - README.md
+  - CHANGELOG.md
   - test/goldens/**/*.golden
 
 ghc-options:
@@ -20,12 +30,12 @@ library:
   source-dirs: src
   dependencies:
     - base < 5
-    - containers
-    - hint
-    - megaparsec
-    - mtl
-    - text
-    - unliftio
+    - containers < 0.7
+    - hint < 0.10
+    - megaparsec >= 9.4.1 && < 10
+    - mtl < 3
+    - text < 3
+    - unliftio < 0.3
 
 executable:
   main: exe/Main.hs
@@ -44,7 +54,7 @@ tests:
       - base
       - bytestring
       - tasty
-      - tasty-autocollect
+      - tasty-autocollect >= 0.2
       - tasty-golden
       - tasty-hunit
       - templette

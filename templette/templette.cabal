@@ -6,14 +6,20 @@ cabal-version: 1.12
 
 name:           templette
 version:        0.1.0
+synopsis:       Interpolate Haskell expressions into templates
+description:    Interpolate Haskell expressions into templates.
+                See README for more information.
 category:       Text
 homepage:       https://github.com/brandonchinn178/templette#readme
 bug-reports:    https://github.com/brandonchinn178/templette/issues
 author:         Brandon Chinn <brandonchinn178@gmail.com>
 maintainer:     Brandon Chinn <brandonchinn178@gmail.com>
 license:        BSD3
+license-file:   LICENSE.md
 build-type:     Simple
 extra-source-files:
+    README.md
+    CHANGELOG.md
     test/goldens/preprocess-call.golden
     test/goldens/preprocess-define.golden
     test/goldens/preprocess-interpolate.golden
@@ -44,12 +50,12 @@ library
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wnoncanonical-monad-instances
   build-depends:
       base <5
-    , containers
-    , hint
-    , megaparsec
-    , mtl
-    , text
-    , unliftio
+    , containers <0.7
+    , hint <0.10
+    , megaparsec >=9.4.1 && <10
+    , mtl <3
+    , text <3
+    , unliftio <0.3
   default-language: Haskell2010
 
 executable templette
@@ -78,7 +84,7 @@ test-suite templette-tests
       base
     , bytestring
     , tasty
-    , tasty-autocollect
+    , tasty-autocollect >=0.2
     , tasty-golden
     , tasty-hunit
     , templette

@@ -1,10 +1,21 @@
 name: templette-markdown
 version: 0.1.0
-category: Text
-license: BSD3
 author: Brandon Chinn <brandonchinn178@gmail.com>
 maintainer: Brandon Chinn <brandonchinn178@gmail.com>
+
+category: Text
+synopsis: templette plugin for rendering Markdown templates
+description: |
+  templette plugin for rendering Markdown templates
+  See templette's README for more information.
+
+license: BSD3
+license-file: LICENSE.md
+
 github: brandonchinn178/templette
+
+extra-source-files:
+  - CHANGELOG.md
 
 ghc-options:
   - -Wall
@@ -17,9 +28,9 @@ library:
   source-dirs: src
   dependencies:
     - base < 5
-    - containers
-    - templette
-    - text
+    - containers < 0.7
+    - templette < 1
+    - text < 3
 
 executable:
   main: exe/Main.hs
