@@ -36,13 +36,6 @@ The following example uses the `templette-markdown` library, extending `templett
 
 This is a markdown *post*, saved as `example.ths-md`. Everything will be kept output verbatim, except things wrapped in braces, which will interpolate Haskell expressions, such as {show [1, 2, 3]}.
 
-Interpolation can span multiple lines, like when interpolating HTML directly with `blaze`: {
-    renderHtml $
-      div $ do
-        p "Hello"
-        p "World"
-}
-
 `$setup` blocks will be extracted out of the content and placed at the top-level of the output Haskell file. When this is rendered, you won't see any Haskell code here:
 
 {$setup}
