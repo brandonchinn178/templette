@@ -10,16 +10,16 @@ Description 2: {Text.toUpper description}
 import qualified Templette.Prelude
 description :: Templette.Prelude.Text
 description = mconcat
-  [ "\nI have "
+  [ Templette.Prelude.text "\nI have "
   , Templette.Prelude.interpolate (1 + 1)
-  , " hobbies.\n"
+  , Templette.Prelude.text " hobbies.\n"
   ]
 templetteOutput :: Templette.Prelude.Text
 templetteOutput = mconcat
-  [ "\n\nDescription 1: "
+  [ Templette.Prelude.text "\n\nDescription 1: "
   , Templette.Prelude.interpolate (description)
-  , "\nDescription 2: "
+  , Templette.Prelude.text "\nDescription 2: "
   , Templette.Prelude.interpolate (Text.toUpper description)
-  , "\n"
+  , Templette.Prelude.text "\n"
   ]
 
