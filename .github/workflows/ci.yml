@@ -1,0 +1,140 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_call:
+
+jobs:
+  build_and_test:
+    name: build_and_test
+    runs-on: ubuntu-latest
+
+    steps:
+      -
+        uses: actions/checkout@v3
+      -
+        uses: actions/cache@v3
+        with:
+          path: ~/.stack
+          key: ${{ runner.os }}-stack-cache-${{ hashFiles('stack.yaml', 'package.yaml') }}
+      -
+        name: Build + test
+        run: stack test --ghc-options -Werror
+      -
+        name: Check that Cabal file was generated
+        run: git diff --exit-code '*.cabal'
+      -
+        name: Check README example is up-to-date
+        run: |
+          stack exec examples/regen-snippet.sh
+          git diff --exit-code examples/
+
+  ghc_compat_test:
+    strategy:
+      matrix:
+        ghc_version:
+          - '9.0'
+          - '9.2'
+          - '9.4'
+          - '9.6'
+        include:
+          - ghc_version: '9.0.1'
+            oldest: true
+
+    name: ghc_compat_test (${{ matrix.ghc_version }})
+    runs-on: ubuntu-latest
+
+    steps:
+      -
+        uses: actions/checkout@v3
+      -
+        id: setup
+        name: Set up GHC ${{ matrix.ghc_version }}
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc_version }}
+      -
+        name: Configure the build
+        run:
+          cabal configure
+            --ghc-options='-Werror'
+            --enable-test
+            --test-options='--color=always'
+            --test-show-details=streaming
+      -
+        if: ${{ matrix.oldest }}
+        name: Use oldest dependencies
+        run:
+          cabal configure
+            --enable-append --prefer-oldest
+      -
+        run: cabal update
+      -
+        name: Get build plan
+        run: cabal build all --dry-run
+      -
+        name: Get current month to clear cache
+        run: echo "CURR_MONTH=$(date +%B)" | tee -a "$GITHUB_ENV"
+      -
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ runner.os }}-cabal-cache-${{ env.CURR_MONTH }}-${{ matrix.ghc_version }}-${{ hashFiles('**/plan.json') }}
+          restore-keys: |
+               ${{ runner.os }}-cabal-cache-${{ env.CURR_MONTH }}-${{ matrix.ghc_version }}-
+      -
+        name: Build + Test
+        run: cabal test all
+      -
+        name: Check for outdated packages
+        run: |
+          for dir in templette templette-markdown; do
+            (cd $dir && cabal outdated --exit-code)
+          done
+
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      FOURMOLU_VERSION: '0.13.0.0'
+    steps:
+      -
+        uses: actions/checkout@v3
+      -
+        name: Install fourmolu
+        run: |
+          curl -sSL \
+            "https://github.com/fourmolu/fourmolu/releases/download/v${FOURMOLU_VERSION}/fourmolu-${FOURMOLU_VERSION}-linux-x86_64" \
+            -o /usr/local/bin/fourmolu
+          chmod +x /usr/local/bin/fourmolu
+      -
+        name: Run fourmolu
+        run: fourmolu -m check .
+
+  check_sdist:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        uses: actions/checkout@v3
+      -
+        uses: actions/cache@v3
+        with:
+          path: ~/.stack
+          key: ${{ runner.os }}-check_sdist-${{ hashFiles('stack.yaml') }}
+      -
+        name: Strip unreleased section from CHANGELOG
+        run: |
+          for dir in templette templette-markdown; do
+            sed -i -n '/^# Unreleased/d; /^# /,$p' "${dir}/CHANGELOG.md"
+          done
+      -
+        name: Create sdist bundle
+        run: stack sdist --test-tarball --tar-dir .
+      -
+        uses: actions/upload-artifact@v3
+        with:
+          name: templette-sdist
+          path: templette-*.tar.gz
