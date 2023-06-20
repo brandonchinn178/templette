@@ -101,7 +101,3 @@ test =
               }
         , TempletteInputContent (TempletteInputText " E")
         ]
-
-test_todo = "changes delimiters with {$delim}"
-
-test_todo = "fails when nesting directives"
