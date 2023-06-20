@@ -1,0 +1,47 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.2.
+--
+-- see: https://github.com/sol/hpack
+
+name:           templette-markdown
+version:        0.1.0
+category:       Text
+homepage:       https://github.com/brandonchinn178/templette#readme
+bug-reports:    https://github.com/brandonchinn178/templette/issues
+author:         Brandon Chinn <brandonchinn178@gmail.com>
+maintainer:     Brandon Chinn <brandonchinn178@gmail.com>
+license:        BSD3
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/brandonchinn178/templette
+
+library
+  exposed-modules:
+      Templette.Markdown
+      Templette.Markdown.Directives
+      Templette.Markdown.Prelude
+  other-modules:
+      Paths_templette_markdown
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wnoncanonical-monad-instances
+  build-depends:
+      base <5
+    , containers
+    , templette
+    , text
+  default-language: Haskell2010
+
+executable templette-markdown
+  main-is: exe/Main.hs
+  other-modules:
+      Paths_templette_markdown
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wnoncanonical-monad-instances
+  build-depends:
+      base <5
+    , templette
+    , templette-markdown
+  default-language: Haskell2010

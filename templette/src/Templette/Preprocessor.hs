@@ -29,4 +29,5 @@ preprocessWith TempletteConfig{..} fp t =
         { templettePreprocess = cfgPreprocess
         , templetteDirectives = cfgDirectiveRun <$> cfgDirectives
         , templettePostprocess = cfgPostprocess
+        , templetteImports = cfgImplicitImports
         }

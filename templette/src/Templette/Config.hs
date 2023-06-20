@@ -22,6 +22,7 @@ data TempletteConfig m = TempletteConfig
   , cfgDirectives :: Map Text (DirectiveInfo m)
   , cfgPreprocess :: [TempletteInput] -> m (Either Text [TempletteInput])
   , cfgPostprocess :: [TempletteOutput] -> m (Either Text [TempletteOutput])
+  , cfgImplicitImports :: [Text]
   }
 
 data DirectiveInfo m = DirectiveInfo
@@ -38,6 +39,7 @@ defaultConfig =
     , cfgDirectives = defaultDirectives
     , cfgPreprocess = pure . Right
     , cfgPostprocess = pure . Right
+    , cfgImplicitImports = ["import qualified Templette.Prelude"]
     }
 
 defaultDirectives :: (Monad m) => Map Text (DirectiveInfo m)

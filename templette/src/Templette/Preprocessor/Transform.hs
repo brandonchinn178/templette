@@ -40,6 +40,7 @@ data TempletteTransformOptions m = TempletteTransformOptions
   { templettePreprocess :: [TempletteInput] -> m (Either Text [TempletteInput])
   , templetteDirectives :: Map Text (TempletteDirective -> m (Either Text [TempletteOutput]))
   , templettePostprocess :: [TempletteOutput] -> m (Either Text [TempletteOutput])
+  , templetteImports :: [Text]
   }
 
 transformWith ::
@@ -49,7 +50,7 @@ transformWith ::
   -> m (Either Text Text)
 transformWith options = runExceptT . transform
   where
-    transform = preprocess >=> concatMapM resolve >=> postprocess >=> (pure . renderOutput)
+    transform = preprocess >=> concatMapM resolve >=> postprocess >=> (pure . renderOutput options)
 
     preprocess = ExceptT . templettePreprocess options
     resolve = ExceptT . resolveInput options
@@ -74,15 +75,16 @@ renderInputContentExpr = \case
      in "Templette.Prelude.interpolate (" <> expr' <> ")"
 
 -- TODO: enable hooking into this in TempletteTransformOptions?
-renderOutput :: [TempletteOutput] -> Text
-renderOutput output = Text.unlines $ withImports imports code ++ renderTempletteOutput outputExprs
+renderOutput :: TempletteTransformOptions m -> [TempletteOutput] -> Text
+renderOutput opts output =
+  Text.unlines $ withImports imports code ++ renderTempletteOutput outputExprs
   where
     (code, outputExprs) =
       partitionEithers . flip map output $ \case
         TempletteOutputCode s -> Left s
         TempletteOutputExpr s -> Right s
 
-    imports = ["import qualified Templette.Prelude"]
+    imports = templetteImports opts
     renderTempletteOutput exprs =
       [ "templetteOutput :: Templette.Prelude.Text"
       , "templetteOutput = " <> renderInputContentExprs exprs
