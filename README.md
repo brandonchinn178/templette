@@ -73,16 +73,6 @@ with interpolation: {show $ 1 + 1}
 This renders the defined description:
 {description}
 
-The delimiters can be switched to avoid constantly escaping `\{` characters everywhere:
-
-    {$delims <>}
-    <$define color>blue<$end>
-
-    h1 {
-        color: <color>;
-    }
-    {$end}
-
 ## templette-markdown features
 
 `templette-markdown` adds more directives useful for Literate Haskell-like functionality.
