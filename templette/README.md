@@ -1,6 +1,6 @@
 # templette
 
-[![CircleCI](https://img.shields.io/circleci/build/github/brandonchinn178/templette)](https://app.circleci.com/pipelines/github/brandonchinn178/templette)
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/brandonchinn178/templette/ci.yml?branch=main)](https://github.com/brandonchinn178/templette/actions?query=branch%3Amain)
 
 An extensible templating system enabling the execution and interpolation of Haskell expressions.
 
