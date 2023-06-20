@@ -37,6 +37,9 @@ This is a markdown *post*, saved as `example.ths-md`. Everything will be kept ou
 import Data.Text (Text)
 import Data.Text qualified as T
 
+import Text.Blaze.Html.Renderer.Text (renderHtml)
+import qualified Text.Blaze.Html5 as Html
+
 shout :: Text -> Text
 shout t = "**" <> T.toUpper t <> "!!" <> "**"
 {$end}
@@ -46,6 +49,13 @@ Things defined in `$setup` blocks can be used in interpolation, like this: {shou
 `$call` blocks will call the function with the text content and interpolate the result:
 
 {$call shout}This will be shouted, {T.unwords ["even", "this"]}{$end}
+
+Interpolation can span multiple lines, like when interpolating HTML directly with `blaze`: {
+  renderHtml $
+    Html.div $ do
+      Html.p "Hello"
+      Html.p "World"
+}
 
 Blocks of content can be set for arbitrary variables with `$define` (which will not be rendered).
 
