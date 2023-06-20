@@ -1,5 +1,7 @@
 # templette
 
+[![CircleCI](https://img.shields.io/circleci/build/github/brandonchinn178/templette)](https://app.circleci.com/pipelines/github/brandonchinn178/templette)
+
 An extensible templating system enabling the execution and interpolation of Haskell expressions.
 
 ## Quickstart

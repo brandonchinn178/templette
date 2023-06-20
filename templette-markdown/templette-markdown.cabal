@@ -6,13 +6,19 @@ cabal-version: 1.12
 
 name:           templette-markdown
 version:        0.1.0
+synopsis:       templette plugin for rendering Markdown templates
+description:    templette plugin for rendering Markdown templates
+                See templette's README for more information.
 category:       Text
 homepage:       https://github.com/brandonchinn178/templette#readme
 bug-reports:    https://github.com/brandonchinn178/templette/issues
 author:         Brandon Chinn <brandonchinn178@gmail.com>
 maintainer:     Brandon Chinn <brandonchinn178@gmail.com>
 license:        BSD3
+license-file:   LICENSE.md
 build-type:     Simple
+extra-source-files:
+    CHANGELOG.md
 
 source-repository head
   type: git
@@ -30,9 +36,9 @@ library
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wnoncanonical-monad-instances
   build-depends:
       base <5
-    , containers
-    , templette
-    , text
+    , containers <0.7
+    , templette <1
+    , text <3
   default-language: Haskell2010
 
 executable templette-markdown
